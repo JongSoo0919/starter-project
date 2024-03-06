@@ -9,10 +9,12 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
@@ -22,7 +24,9 @@ public class SecurityConfig {
                 .formLogin(Customizer.withDefaults())
                 .logout(Customizer.withDefaults())
                 .authorizeHttpRequests((request) -> request
-                        .requestMatchers(PathRequest.toH2Console()).permitAll());
+                        .requestMatchers(PathRequest.toH2Console()).permitAll() // h2
+                        .requestMatchers("/swagger*/**", "/v3/api-docs/**").permitAll() // swagger
+                        .anyRequest().authenticated());
 
         return httpSecurity.build();
     }
