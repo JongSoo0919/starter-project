@@ -26,6 +26,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests((request) -> request
                         .requestMatchers(PathRequest.toH2Console()).permitAll() // h2
                         .requestMatchers("/swagger*/**", "/v3/api-docs/**").permitAll() // swagger
+                        .requestMatchers("/signup").permitAll()
                         .anyRequest().authenticated());
 
         return httpSecurity.build();
