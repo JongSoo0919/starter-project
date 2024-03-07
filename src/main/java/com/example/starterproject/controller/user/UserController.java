@@ -22,12 +22,14 @@ public class UserController {
             @RequestBody @Valid UserSignupRequestDto userSignupRequestDto,
             BindingResult bindingResult) {
         log.info("request signup {}",userSignupRequestDto);
+
         //TODO : 익셉션 처리
         if(bindingResult.hasErrors()){
             return ResponseEntity.status(400).body(null);
         }
+
         return ResponseEntity.status(201).body(UserSignupResponseDto.builder()
-                .id(userService.signup(userSignupRequestDto))
+                .id(userService.signup(userSignupRequestDto).getId())
                 .build());
     }
 }
