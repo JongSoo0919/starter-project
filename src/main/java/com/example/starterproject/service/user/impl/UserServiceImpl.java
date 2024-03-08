@@ -2,6 +2,8 @@ package com.example.starterproject.service.user.impl;
 
 import com.example.starterproject.dto.user.request.UserSignupRequestDto;
 import com.example.starterproject.entity.user.Users;
+import com.example.starterproject.exception.EmailDuplicateException;
+import com.example.starterproject.exception.common.ErrorCode;
 import com.example.starterproject.repository.user.UserRepository;
 import com.example.starterproject.service.user.UserService;
 import lombok.RequiredArgsConstructor;
@@ -15,10 +17,10 @@ public class UserServiceImpl implements UserService {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     @Override
     public Users signup(UserSignupRequestDto userSignupRequestDto) {
-        //TODO : 익셉션 처리
         if (userRepository.existsByEmail(userSignupRequestDto.getEmail())) {
-            throw new RuntimeException("중복 회원가입 입니다.");
+            throw new EmailDuplicateException(ErrorCode.EMAIL_DUPLICATION);
         }
+
         return userRepository.save(Users.builder()
                 .email(userSignupRequestDto.getEmail())
                 .name(userSignupRequestDto.getName())

@@ -2,6 +2,8 @@ package com.example.starterproject.controller.user;
 
 import com.example.starterproject.dto.user.request.UserSignupRequestDto;
 import com.example.starterproject.dto.user.response.UserSignupResponseDto;
+import com.example.starterproject.exception.ParameterNotValidException;
+import com.example.starterproject.exception.common.ErrorCode;
 import com.example.starterproject.service.user.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -23,9 +25,8 @@ public class UserController {
             BindingResult bindingResult) {
         log.info("request signup {}",userSignupRequestDto);
 
-        //TODO : 익셉션 처리
         if(bindingResult.hasErrors()){
-            return ResponseEntity.status(400).body(null);
+            throw new ParameterNotValidException(ErrorCode.PARAMETER_NOT_VALID);
         }
 
         return ResponseEntity.status(201).body(UserSignupResponseDto.builder()
