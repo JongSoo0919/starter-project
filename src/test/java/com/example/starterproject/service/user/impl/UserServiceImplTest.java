@@ -1,5 +1,6 @@
 package com.example.starterproject.service.user.impl;
 
+import com.example.starterproject.dto.user.request.UserSignupRequest;
 import com.example.starterproject.dto.user.request.UserSignupRequestDto;
 import com.example.starterproject.dto.user.response.UserSignupResponseDto;
 import com.example.starterproject.entity.user.Users;
@@ -27,32 +28,33 @@ class UserServiceImplTest {
     @DisplayName("회원가입을 진행한다.")
     void 회원가입() {
         //given
-        UserSignupRequestDto userSignupRequestDto = new UserSignupRequestDto();
-        userSignupRequestDto.setEmail("1234@gmail.com");
-        userSignupRequestDto.setPassword("1234");
-        userSignupRequestDto.setName("이름");
-
+        UserSignupRequest userSignupRequest = new UserSignupRequest(
+                "1234@gmail.com"
+                ,"1234"
+                ,"이름"
+        );
         //when
-        String email = userService.signup(userSignupRequestDto).getEmail();
+        String email = userService.signup(userSignupRequest).getEmail();
 
         //then
-        Assertions.assertThat(userSignupRequestDto.getEmail()).isEqualTo(email);
+        Assertions.assertThat(userSignupRequest.email()).isEqualTo(email);
     }
 
     @Test
     @DisplayName("패스워드 암호화가 되었는지 확인한다.")
     void 패스워드_인코딩() {
         //given
-        UserSignupRequestDto userSignupRequestDto = new UserSignupRequestDto();
-        userSignupRequestDto.setEmail("123@gmail.com");
-        userSignupRequestDto.setPassword("1234");
-        userSignupRequestDto.setName("이름");
+        UserSignupRequest userSignupRequest = new UserSignupRequest(
+                "123@gmail.com"
+                ,"1234"
+                ,"이름"
+        );
 
         //then
-        Users user = userService.signup(userSignupRequestDto);
+        Users user = userService.signup(userSignupRequest);
 
         //then
         Assertions.assertThat(true)
-                .isEqualTo(bCryptPasswordEncoder.matches(userSignupRequestDto.getPassword(), user.getPassword()));
+                .isEqualTo(bCryptPasswordEncoder.matches(userSignupRequest.password(), user.getPassword()));
     }
 }

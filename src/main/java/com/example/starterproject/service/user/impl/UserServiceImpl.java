@@ -1,5 +1,6 @@
 package com.example.starterproject.service.user.impl;
 
+import com.example.starterproject.dto.user.request.UserSignupRequest;
 import com.example.starterproject.dto.user.request.UserSignupRequestDto;
 import com.example.starterproject.entity.user.Users;
 import com.example.starterproject.exception.EmailDuplicateException;
@@ -16,15 +17,15 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     @Override
-    public Users signup(UserSignupRequestDto userSignupRequestDto) {
-        if (userRepository.existsByEmail(userSignupRequestDto.getEmail())) {
+    public Users signup(UserSignupRequest userSignupRequest) {
+        if (userRepository.existsByEmail(userSignupRequest.email())) {
             throw new EmailDuplicateException(ErrorCode.EMAIL_DUPLICATION);
         }
 
         return userRepository.save(Users.builder()
-                .email(userSignupRequestDto.getEmail())
-                .name(userSignupRequestDto.getName())
-                .password(bCryptPasswordEncoder.encode(userSignupRequestDto.getPassword()))
+                .email(userSignupRequest.email())
+                .name(userSignupRequest.name())
+                .password(bCryptPasswordEncoder.encode(userSignupRequest.password()))
                 .role("ROLE_USER")
                 .build());
     }
