@@ -1,7 +1,6 @@
 package com.example.starterproject.service.user.impl;
 
 import com.example.starterproject.dto.user.request.UserSignupRequest;
-import com.example.starterproject.dto.user.request.UserSignupRequestDto;
 import com.example.starterproject.entity.user.Users;
 import com.example.starterproject.exception.EmailDuplicateException;
 import com.example.starterproject.exception.common.ErrorCode;

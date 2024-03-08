@@ -1,9 +1,7 @@
 package com.example.starterproject.controller.user;
 
 import com.example.starterproject.dto.user.request.UserSignupRequest;
-import com.example.starterproject.dto.user.request.UserSignupRequestDto;
 import com.example.starterproject.dto.user.response.UserSignupResponse;
-import com.example.starterproject.dto.user.response.UserSignupResponseDto;
 import com.example.starterproject.exception.ParameterNotValidException;
 import com.example.starterproject.exception.common.ErrorCode;
 import com.example.starterproject.service.user.UserService;
