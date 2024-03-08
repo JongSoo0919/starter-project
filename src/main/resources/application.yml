@@ -11,9 +11,10 @@ spring:
     hibernate:
       ddl-auto: create-drop
     show-sql: true
+    defer-datasource-initialization: true
 
 springdoc:
   swagger-ui:
     enabled: true
     disable-swagger-default-url: true
-
+  show-login-endpoint: false
