@@ -1,6 +1,8 @@
 package com.example.starterproject.dto.user;
 
 import com.example.starterproject.entity.user.Users;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -9,6 +11,8 @@ import java.util.List;
 
 public class UserLoginDetails implements UserDetails {
     private final Users user;
+    @Getter @Setter
+    private String accessToken;
 
     public UserLoginDetails(Users user) {
         this.user = user;

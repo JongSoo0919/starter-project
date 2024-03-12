@@ -4,6 +4,7 @@ import com.example.starterproject.dto.user.UserLoginDetails;
 import com.example.starterproject.dto.user.request.UserLoginRequest;
 import com.example.starterproject.exception.ParameterNotValidException;
 import com.example.starterproject.exception.common.ErrorCode;
+import com.example.starterproject.util.JwtUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -24,10 +25,12 @@ import java.nio.charset.StandardCharsets;
 
 public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     private final AuthenticationManager authenticationManager;
+    private final JwtUtil jwtUtil;
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
-    public LoginFilter(AuthenticationManager authenticationManager) {
+    public LoginFilter(AuthenticationManager authenticationManager, JwtUtil jwtUtil) {
         this.authenticationManager = authenticationManager;
+        this.jwtUtil = jwtUtil;
         setFilterProcessesUrl("/api/login");
     }
 
@@ -52,10 +55,14 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
         UserLoginDetails userLoginDetails = (UserLoginDetails) authResult.getPrincipal();
+        String email = userLoginDetails.getUsername();
+        String name = userLoginDetails.getName();
 
-        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
-                new UsernamePasswordAuthenticationToken(userLoginDetails, null, userLoginDetails.getAuthorities());
-
+        String token = jwtUtil.createToken(email, name);
+        response.addHeader("Authorization", "Bearer " + token);
+        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken
+                = new UsernamePasswordAuthenticationToken(userLoginDetails, null, userLoginDetails.getAuthorities());
+        userLoginDetails.setAccessToken(token);
         SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
         chain.doFilter(request, response);
     }

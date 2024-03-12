@@ -46,9 +46,7 @@ public class UserController {
             ) {
         log.info("request login {}", userLoginDetails);
 
-        //TODO : Jwt login으로 변경
-
         return ResponseEntity.ok()
-                .body(new UserLoginResponse(userLoginDetails.getName()));
+                .body(new UserLoginResponse(userLoginDetails.getAccessToken()));
     }
 }
