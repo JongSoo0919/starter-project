@@ -43,6 +43,8 @@ public class SecurityConfig {
                         .requestMatchers("/error").permitAll()
                         .requestMatchers("/swagger*/**", "/v3/api-docs/**").permitAll() // swagger
                         .requestMatchers("/api/signup", "/api/login").permitAll()
+                        .requestMatchers("/user").hasAuthority("user")
+                        .requestMatchers("/admin").hasAuthority("admin")
                         .anyRequest().authenticated())
                 .addFilterBefore(new CacheServletRequestFilter(), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(new ExceptionFilter(), UsernamePasswordAuthenticationFilter.class)

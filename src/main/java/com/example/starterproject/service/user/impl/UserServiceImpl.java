@@ -30,7 +30,7 @@ public class UserServiceImpl implements UserService {
                 .email(userSignupRequest.email())
                 .name(userSignupRequest.name())
                 .password(bCryptPasswordEncoder.encode(userSignupRequest.password()))
-                .role("ROLE_USER")
+                .role("user")
                 .build());
     }
 
